@@ -4,17 +4,9 @@ import { nanoid } from "nanoid";
 export default function tasksList() {
     const tasks = [];
 
-    function addTask(title, desc, dueDate, priority, notes, checklist) {
+    function addTask(title, desc, dueDate, priority, done) {
         const id = nanoid();
-        const newTask = task(
-            id,
-            title,
-            desc,
-            dueDate,
-            priority,
-            notes,
-            checklist
-        );
+        const newTask = task(id, title, desc, dueDate, priority, false);
 
         if (title === "") {
             console.error("Provide Title");
@@ -23,6 +15,11 @@ export default function tasksList() {
         if (dueDate === "") {
             console.error("Provide Due date");
             return;
+        }
+
+        dueDate = new Date(dueDate);
+        if (isNaN(dueDate)) {
+            console.error("Date not in correct format");
         }
 
         tasks.push(newTask);

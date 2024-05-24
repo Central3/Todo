@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todoish</title>
+</head>
+
+<body>
+    <div class="container">
+        <section class="modal hidden">
+            <form action="" class="add-task">
+                <div>
+                    <input type="text" name="title" id="title" placeholder="Title" required>
+                </div>
+                <div>
+                    <textarea name="description" id="description" placeholder="Description"></textarea>
+                </div>
+                <div>
+                    <input type="date" name="dueDate" id="dueDate" required>
+                </div>
+                <div>
+                    <select name="priority" id="priority">
+                        <option value="p1">Priority1</option>
+                        <option value="p2">Priority2</option>
+                        <option value="p3">Priority3</option>
+                        <option value="p4">Priority4</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-close">Cancel</button>
+                    <button class="add-btn" type="submit">Add Task</button>
+                </div>
+            </form>
+        </section>
+        <!-- <div class="overlay hidden"></div> -->
+        <button id="add" class="btn btn-open">Add</button>
+    </div>
+</body>
+
+</html>
