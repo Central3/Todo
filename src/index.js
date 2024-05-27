@@ -1,4 +1,4 @@
 import "./style.css";
-import addTaskForm from "./addTaskForm";
+import UIController from "./UIController";
 
-addTaskForm();
+UIController();

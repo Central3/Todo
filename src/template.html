@@ -1,42 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <title>Todoish</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todoish</title>
-</head>
+    <body class="poppins-regular">
+        <div class="container">
+            <section class="modal hidden animate__animated animate__faster">
+                <form action="" class="add-task">
+                    <div>
+                        <input
+                            type="text"
+                            name="title"
+                            id="title"
+                            placeholder="Title"
+                            class="poppins-bold"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <textarea
+                            name="description"
+                            id="description"
+                            placeholder="Description"
+                        ></textarea>
+                    </div>
+                    <div>
+                        <input
+                            type="date"
+                            name="dueDate"
+                            id="dueDate"
+                            required
+                        />
+                        <select name="priority" id="priority">
+                            <option value="p1">Priority1</option>
+                            <option value="p2">Priority2</option>
+                            <option value="p3">Priority3</option>
+                            <option value="p4">Priority4</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-close" type="button">Cancel</button>
+                        <button class="add-btn" type="submit">Add Task</button>
+                    </div>
+                </form>
+            </section>
+            <!-- <div class="overlay hidden"></div> -->
+            <button id="add" class="btn btn-open poppins-extrabold">
+                <img src="assets/icons/plus-circle.svg" alt="add" />Add task
+            </button>
 
-<body>
-    <div class="container">
-        <section class="modal hidden">
-            <form action="" class="add-task">
-                <div>
-                    <input type="text" name="title" id="title" placeholder="Title" required>
-                </div>
-                <div>
-                    <textarea name="description" id="description" placeholder="Description"></textarea>
-                </div>
-                <div>
-                    <input type="date" name="dueDate" id="dueDate" required>
-                </div>
-                <div>
-                    <select name="priority" id="priority">
-                        <option value="p1">Priority1</option>
-                        <option value="p2">Priority2</option>
-                        <option value="p3">Priority3</option>
-                        <option value="p4">Priority4</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-close">Cancel</button>
-                    <button class="add-btn" type="submit">Add Task</button>
-                </div>
-            </form>
-        </section>
-        <!-- <div class="overlay hidden"></div> -->
-        <button id="add" class="btn btn-open">Add</button>
-    </div>
-</body>
-
+            <div id="main-display"></div>
+        </div>
+    </body>
 </html>

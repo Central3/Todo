@@ -36,5 +36,9 @@ export default function tasksList() {
         });
     }
 
-    return { addTask, deleteTask, printTasks };
+    function getTasks() {
+        return tasks;
+    }
+
+    return { addTask, deleteTask, printTasks, getTasks };
 }
