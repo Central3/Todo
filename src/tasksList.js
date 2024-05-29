@@ -5,23 +5,22 @@ export default function tasksList() {
     const tasks = [];
 
     function addTask(title, desc, dueDate, priority, done) {
-        const id = nanoid();
-        const newTask = task(id, title, desc, dueDate, priority, false);
-
-        if (title === "") {
+        if (!title) {
             console.error("Provide Title");
             return;
         }
-        if (dueDate === "") {
+        if (!dueDate) {
             console.error("Provide Due date");
             return;
         }
 
-        dueDate = new Date(dueDate);
-        if (isNaN(dueDate)) {
+        const parsedDueDate = new Date(dueDate);
+        if (isNaN(parsedDueDate)) {
             console.error("Date not in correct format");
         }
 
+        const id = nanoid();
+        const newTask = task(id, title, desc, parsedDueDate, priority, false);
         tasks.push(newTask);
     }
 

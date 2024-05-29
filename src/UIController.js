@@ -13,8 +13,7 @@ export default function UIController() {
     const list = tasksList();
 
     const openModal = function () {
-        modal.classList.remove("hidden");
-        modal.classList.remove("animate__zoomOut");
+        modal.classList.remove("hidden", "animate__zoomOut");
         modal.classList.add("animate__zoomIn");
         title.focus();
     };
@@ -43,7 +42,6 @@ export default function UIController() {
         );
 
         closeModal();
-
         updateScreen();
     };
 
@@ -52,21 +50,27 @@ export default function UIController() {
 
         list.getTasks().forEach((task) => {
             const taskBox = document.createElement("div");
-            const title = document.createElement("p");
-            const description = document.createElement("p");
+            const titleElement = document.createElement("p");
+            const descriptionElement = document.createElement("p");
             const contentContainer = document.createElement("div");
             const checkboxContainer = document.createElement("div");
             const checkbox = document.createElement("input");
 
             taskBox.classList.add("task-container");
 
-            title.textContent = task.title;
-            description.textContent = task.desc;
+            titleElement.textContent = task.title;
+            descriptionElement.textContent = task.desc;
             checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = task.done;
+
+            checkbox.addEventListener("change", () => {
+                task.done = checkbox.checked;
+                console.log(task);
+            });
 
             checkboxContainer.appendChild(checkbox);
-            contentContainer.appendChild(title);
-            contentContainer.appendChild(description);
+            contentContainer.appendChild(titleElement);
+            contentContainer.appendChild(descriptionElement);
             taskBox.appendChild(checkboxContainer);
             taskBox.appendChild(contentContainer);
 
@@ -76,15 +80,13 @@ export default function UIController() {
 
     const updateScreen = function () {
         displayTasks();
-
-        if (list.getTasks().length === 0) mainDisplay.classList.add("hidden");
-        else mainDisplay.classList.remove("hidden");
+        mainDisplay.classList.toggle("hidden", list.getTasks().length === 0);
     };
 
     closeBtn.addEventListener("click", closeModal);
     addBtn.addEventListener("click", openModal);
-
     form.addEventListener("submit", handleSubmit);
 
+    // Initial screen update
     updateScreen();
 }
