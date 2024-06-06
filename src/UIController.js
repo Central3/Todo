@@ -6,6 +6,7 @@ const closeBtn = document.querySelector(".btn-close");
 const addBtn = document.querySelector("#add");
 const form = document.querySelector(".add-task");
 const mainDisplay = document.querySelector("#main-display");
+const sideBar = document.querySelector(".side-bar");
 
 export default function UIController() {
     const [title, description, dueDate, priority] = form.elements;
@@ -59,9 +60,12 @@ export default function UIController() {
             taskBox.classList.add("task-container");
 
             titleElement.textContent = task.title;
+            titleElement.classList.add("task-title");
             descriptionElement.textContent = task.desc;
+            descriptionElement.classList.add("task-description");
             checkbox.setAttribute("type", "checkbox");
             checkbox.checked = task.done;
+            checkbox.classList.add("done-status");
 
             checkbox.addEventListener("change", () => {
                 task.done = checkbox.checked;
