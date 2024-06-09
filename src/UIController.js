@@ -1,4 +1,3 @@
-import tasksList from "./tasksList";
 import "animate.css";
 
 const modal = document.querySelector(".modal");
@@ -11,7 +10,7 @@ const sideBar = document.querySelector(".side-bar");
 export default function UIController() {
     const [title, description, dueDate, priority] = form.elements;
 
-    const list = tasksList();
+    // const list = tasksList();
 
     const openModal = function () {
         modal.classList.remove("hidden", "animate__zoomOut");

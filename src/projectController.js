@@ -1,8 +1,17 @@
-import project from "./project";
 import { nanoid } from "nanoid";
+import project from "./project";
 
 export default function projectController() {
     let projects = [];
+
+    const getProjects = () => {
+        return projects;
+    };
+
+    const getProject = (id) => {
+        const found = projects.find((project) => project.name === id);
+        return found;
+    };
 
     const createProject = (name) => {
         const id = nanoid();
@@ -26,5 +35,12 @@ export default function projectController() {
         });
     };
 
-    return { createProject, printProjects, removeProject, editProjectName };
+    return {
+        getProjects,
+        createProject,
+        printProjects,
+        removeProject,
+        editProjectName,
+        getProject,
+    };
 }
