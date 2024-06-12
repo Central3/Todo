@@ -31,5 +31,5 @@ export default function task(
         },
     };
 
-    return newTask;
+    return { id, title, desc, dueDate, priority, done };
 }

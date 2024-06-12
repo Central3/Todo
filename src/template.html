@@ -35,11 +35,7 @@
                         ></textarea>
                     </div>
                     <div>
-                        <input
-                            type="date"
-                            name="dueDate"
-                            id="dueDate"
-                        />
+                        <input type="date" name="dueDate" id="dueDate" />
                         <select name="priority" id="priority">
                             <option value="p1">Priority1</option>
                             <option value="p2">Priority2</option>
@@ -53,18 +49,21 @@
                     </div>
                 </form>
             </section>
-            <!-- <div class="overlay hidden"></div> -->
+            <div class="overlay hidden"></div>
 
-            <div class="side-bar"></div>
+            <div class="side-bar">
+                <div class="default-projects-list"></div>
+                <h3 class="project-subtitle">Your Projects</h3>
+                <div class="user-projects-list"></div>
+                <button class="btn add-project-btn poppins-extrabold">
+                    Add Project
+                </button>
+            </div>
+
             <div class="display">
-                <!-- <button id="add" class="btn btn-open poppins-extrabold">
-                    <img src="assets/icons/plus-circle.svg" alt="add" />Add task
-                </button> -->
-                <div id="main-display">
-                </div>
+                <div id="main-display"></div>
                 <button id="add" class="btn btn-open poppins-extrabold">
-                    <img src="assets/icons/plus-circle.svg" alt="add" />Add
-                    task
+                    <img src="assets/icons/plus-circle.svg" alt="add" />Add task
                 </button>
             </div>
         </div>

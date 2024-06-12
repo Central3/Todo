@@ -1,20 +1,22 @@
 import "animate.css";
+import { getProjectByName } from "./projectController";
 
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector(".btn-close");
 const addBtn = document.querySelector("#add");
 const form = document.querySelector(".add-task");
 const mainDisplay = document.querySelector("#main-display");
-const sideBar = document.querySelector(".side-bar");
+const modalOverlay = document.querySelector(".overlay");
 
 export default function UIController() {
     const [title, description, dueDate, priority] = form.elements;
-
-    // const list = tasksList();
+    const allTasks = getProjectByName("All");
+    let selectedProject = allTasks;
 
     const openModal = function () {
         modal.classList.remove("hidden", "animate__zoomOut");
         modal.classList.add("animate__zoomIn");
+        modalOverlay.classList.remove("hidden");
         title.focus();
     };
 
@@ -23,6 +25,7 @@ export default function UIController() {
 
         modal.classList.remove("animate__zoomIn");
         modal.classList.add("animate__zoomOut");
+        modalOverlay.classList.add("hidden");
 
         modal.addEventListener("animationend", function handler() {
             modal.classList.add("hidden");
@@ -34,7 +37,7 @@ export default function UIController() {
     const handleSubmit = function (event) {
         event.preventDefault();
 
-        list.addTask(
+        allTasks.addTask(
             title.value,
             description.value,
             dueDate.value,
@@ -48,7 +51,7 @@ export default function UIController() {
     const displayTasks = function () {
         mainDisplay.textContent = "";
 
-        list.getTasks().forEach((task) => {
+        selectedProject.getTasks().forEach((task) => {
             const taskBox = document.createElement("div");
             const titleElement = document.createElement("p");
             const descriptionElement = document.createElement("p");
@@ -83,7 +86,7 @@ export default function UIController() {
 
     const updateScreen = function () {
         displayTasks();
-        mainDisplay.classList.toggle("hidden", list.getTasks().length === 0);
+        // mainDisplay.classList.toggle("hidden", list.getTasks().length === 0);
     };
 
     closeBtn.addEventListener("click", closeModal);

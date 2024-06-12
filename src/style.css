@@ -207,16 +207,49 @@ select {
     height: 16px;
 }
 
+.container {
+    display: flex;
+}
+
 .side-bar {
     height: 100vh;
     background-color: #f1dede;
     flex: 1;
 }
 
-.container {
-    display: flex;
-}
-
 .display {
     flex: 4;
+}
+
+.default-projects-list {
+    margin-top: 16px;
+}
+
+.default-projects-list > *,
+.user-projects-list > * {
+    padding: 4px 16px;
+}
+
+.default-projects-list > *:hover,
+.user-projects-list > *:hover {
+    cursor: pointer;
+    background-color: #e1cece;
+}
+
+.project-subtitle {
+    margin: 4px 8px;
+}
+
+.add-project-btn {
+    margin: 8px auto;
+    display: block;
+    width: 90%;
+}
+
+.selected {
+    background-color: #fff;
+}
+
+.selected:hover {
+    background-color: #fff;
 }
