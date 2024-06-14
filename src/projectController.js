@@ -1,7 +1,9 @@
 import { nanoid } from "nanoid";
 import project from "./project";
 
-export let projects = [];
+let projects = [];
+
+export const getProjects = () => projects;
 
 export const getProjectById = (id) => {
     const found = projects.find((project) => project.id === id);
