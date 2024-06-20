@@ -5,8 +5,7 @@ export default function project(id, name) {
     const tasks = [];
 
     function addTask(title, desc, dueDate, priority, done, id) {
-        if (!id)
-            id = nanoid();
+        if (!id) id = nanoid();
 
         let parsedDueDate = new Date(dueDate);
         if (isNaN(parsedDueDate.valueOf())) parsedDueDate = "";
@@ -25,7 +24,7 @@ export default function project(id, name) {
             console.log(task);
         });
     }
-    
+
     function clearTasks() {
         tasks.splice(0);
     }

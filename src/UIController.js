@@ -3,7 +3,10 @@ import {
     getProjectById,
     getProjectByName,
     printProjects,
+    deleteTask,
 } from "./projectController";
+import trashIcon from "./assets/icons/trash-2.svg";
+import editIcon from "./assets/icons/edit-3.svg";
 
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector(".btn-close");
@@ -12,6 +15,7 @@ const form = document.querySelector(".add-task");
 const mainDisplay = document.querySelector("#main-display");
 const modalOverlay = document.querySelector(".overlay");
 const defaultProjectsList = document.querySelector(".default-projects");
+const projectTitleElement = document.querySelector(".project-title");
 
 export default function UIController() {
     const [title, description, dueDate, priority] = form.elements;
@@ -51,6 +55,8 @@ export default function UIController() {
             priority.value
         );
 
+        updateTodayList();
+
         closeModal();
         updateScreen();
     };
@@ -66,10 +72,17 @@ export default function UIController() {
             const contentContainer = document.createElement("div");
             const checkboxContainer = document.createElement("div");
             const checkbox = document.createElement("input");
+            const deleteBtn = document.createElement("img");
+            const editBtn = document.createElement("img");
 
             taskBox.classList.add("task-container");
+            taskBox.setAttribute("data-task-id", `${task.id}`);
 
             titleElement.textContent = task.title;
+            deleteBtn.src = trashIcon;
+            deleteBtn.setAttribute("alt", "delete");
+            editBtn.src = editIcon;
+            editBtn.setAttribute("alt", "edit");
             titleElement.classList.add("task-title");
             descriptionElement.textContent = task.desc;
             descriptionElement.classList.add("task-description");
@@ -83,6 +96,8 @@ export default function UIController() {
             checkbox.setAttribute("type", "checkbox");
             checkbox.checked = task.done;
             checkbox.classList.add("done-status");
+            deleteBtn.classList.add("delete-task");
+            editBtn.classList.add("edit-task");
 
             checkbox.addEventListener("change", () => {
                 task.done = checkbox.checked;
@@ -95,6 +110,8 @@ export default function UIController() {
             contentContainer.appendChild(dueDateElement);
             taskBox.appendChild(checkboxContainer);
             taskBox.appendChild(contentContainer);
+            taskBox.appendChild(editBtn);
+            taskBox.appendChild(deleteBtn);
 
             mainDisplay.appendChild(taskBox);
         });
@@ -107,7 +124,7 @@ export default function UIController() {
             const container = document.createElement("div");
             container.textContent = project.name;
             container.setAttribute("data-project-id", `${project.id}`);
-            container.classList.add("project");
+            container.classList.add("project", "poppins-semibold");
 
             defaultProjectsList.appendChild(container);
         });
@@ -129,7 +146,6 @@ export default function UIController() {
                     task.done,
                     task.id
                 );
-                console.log(todayTasks.getTasks());
             }
         });
     };
@@ -137,21 +153,48 @@ export default function UIController() {
     const selectDefaultProject = (event) => {
         if (event.target.classList.contains("project")) {
             selectedProject = getProjectById(event.target.dataset.projectId);
-            displayTasks();
+
+            updateScreen();
+        }
+    };
+
+    const mainDisplayClick = (event) => {
+        if (event.target.classList.contains("delete-task")) {
+            const taskId = event.target.parentNode.dataset.taskId;
+            selectedProject.deleteTask(taskId);
+            allTasks.deleteTask(taskId);
+
+            updateScreen();
+        }
+
+        if (event.target.classList.contains("edit-task")) {
+            console.log("Edit task");
         }
     };
 
     const updateScreen = function () {
+        projectTitleElement.textContent = selectedProject.name;
         displayTasks();
         displayDefaultProjects();
         updateTodayList();
-        // mainDisplay.classList.toggle("hidden", list.getTasks().length === 0);
+
+        defaultProjectsList.childNodes.forEach((node) => {
+            if (node.dataset.projectId === selectedProject.id)
+                node.classList.add("selected");
+            else node.classList.remove("selected");
+        });
+
+        mainDisplay.classList.toggle(
+            "hidden",
+            selectedProject.getTasks().length === 0
+        );
     };
 
     closeBtn.addEventListener("click", closeModal);
     addBtn.addEventListener("click", openModal);
     form.addEventListener("submit", handleSubmit);
     defaultProjectsList.addEventListener("click", selectDefaultProject);
+    mainDisplay.addEventListener("click", mainDisplayClick);
 
     // Initial screen update
     updateScreen();
