@@ -2,8 +2,7 @@ import "animate.css";
 import {
     getProjectById,
     getProjectByName,
-    printProjects,
-    deleteTask,
+    saveProjects,
 } from "./projectController";
 import trashIcon from "./assets/icons/trash-2.svg";
 import editIcon from "./assets/icons/edit-3.svg";
@@ -177,6 +176,7 @@ export default function UIController() {
         displayTasks();
         displayDefaultProjects();
         updateTodayList();
+        saveProjects();
 
         defaultProjectsList.childNodes.forEach((node) => {
             if (node.dataset.projectId === selectedProject.id)

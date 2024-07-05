@@ -1,8 +1,10 @@
 import "./style.css";
 import UIController from "./UIController";
-import { createProject, printProjects } from "./projectController";
+import { createProject, getProjectByName } from "./projectController";
 
-createProject("All");
-createProject("Today");
+if (!getProjectByName("All")) {
+    createProject("All");
+    createProject("Today");
+}
 
 UIController();
