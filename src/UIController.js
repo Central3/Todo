@@ -4,6 +4,11 @@ import {
     getProjectByName,
     printProjects,
     deleteTask,
+    saveProjects,
+    printProjects,
+    deleteTask,
+    getProjects,
+    createProject,
 } from "./projectController";
 import trashIcon from "./assets/icons/trash-2.svg";
 import editIcon from "./assets/icons/edit-3.svg";
@@ -15,13 +20,17 @@ const form = document.querySelector(".add-task");
 const mainDisplay = document.querySelector("#main-display");
 const modalOverlay = document.querySelector(".overlay");
 const defaultProjectsList = document.querySelector(".default-projects");
+const userProjectsList = document.querySelector(".user-projects");
 const projectTitleElement = document.querySelector(".project-title");
+const addProjectBtn = document.querySelector(".add-project-btn");
+const sidebar = document.querySelector(".side-bar");
 
 export default function UIController() {
     const [title, description, dueDate, priority] = form.elements;
     const allTasks = getProjectByName("All");
     const todayTasks = getProjectByName("Today");
     const defaultProjects = [allTasks, todayTasks];
+    let userProjects = getProjects().slice(2);
     let selectedProject = allTasks;
 
     const openModal = function () {
@@ -55,6 +64,20 @@ export default function UIController() {
             priority.value
         );
 
+        const lastEleId =
+            allTasks.getTasks()[allTasks.getTasks().length - 1].id;
+
+        if (selectedProject !== todayTasks && selectedProject !== allTasks) {
+            selectedProject.addTask(
+                title.value,
+                description.value,
+                dueDate.value,
+                priority.value,
+                false,
+                lastEleId
+            );
+        }
+
         updateTodayList();
 
         closeModal();
@@ -63,6 +86,8 @@ export default function UIController() {
 
     const displayTasks = function () {
         mainDisplay.textContent = "";
+
+        console.log(selectedProject.getTasks());
 
         selectedProject.getTasks().forEach((task) => {
             const taskBox = document.createElement("div");
@@ -130,6 +155,19 @@ export default function UIController() {
         });
     };
 
+    const displayUserProjects = function () {
+        userProjectsList.textContent = "";
+
+        userProjects.forEach((project) => {
+            const container = document.createElement("div");
+            container.textContent = project.name;
+            container.setAttribute("data-project-id", `${project.id}`);
+            container.classList.add("project", "poppins-semibold");
+
+            userProjectsList.appendChild(container);
+        });
+    };
+
     const updateTodayList = () => {
         const today = new Date();
         todayTasks.clearTasks();
@@ -164,6 +202,8 @@ export default function UIController() {
             selectedProject.deleteTask(taskId);
             allTasks.deleteTask(taskId);
 
+            getProjects().slice(2).forEach(item => item.deleteTask(taskId));
+
             updateScreen();
         }
 
@@ -172,13 +212,25 @@ export default function UIController() {
         }
     };
 
+    function handleAddProject() {
+        createProject("New");
+        userProjects = getProjects().slice(2);
+        updateScreen();
+    }
+
     const updateScreen = function () {
         projectTitleElement.textContent = selectedProject.name;
         displayTasks();
         displayDefaultProjects();
+        displayUserProjects();
         updateTodayList();
 
         defaultProjectsList.childNodes.forEach((node) => {
+            if (node.dataset.projectId === selectedProject.id)
+                node.classList.add("selected");
+            else node.classList.remove("selected");
+        });
+        userProjectsList.childNodes.forEach((node) => {
             if (node.dataset.projectId === selectedProject.id)
                 node.classList.add("selected");
             else node.classList.remove("selected");
@@ -193,8 +245,9 @@ export default function UIController() {
     closeBtn.addEventListener("click", closeModal);
     addBtn.addEventListener("click", openModal);
     form.addEventListener("submit", handleSubmit);
-    defaultProjectsList.addEventListener("click", selectDefaultProject);
+    sidebar.addEventListener("click", selectDefaultProject);
     mainDisplay.addEventListener("click", mainDisplayClick);
+    addProjectBtn.addEventListener("click", handleAddProject);
 
     // Initial screen update
     updateScreen();

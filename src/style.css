@@ -226,12 +226,12 @@ select {
 }
 
 .default-projects > *,
-.user-projects-list > * {
+.user-projects > * {
     padding: 4px 16px;
 }
 
 .default-projects > *:hover,
-.user-projects-list > *:hover {
+.user-projects > *:hover {
     cursor: pointer;
     background-color: #e1cece;
 }
@@ -247,12 +247,12 @@ select {
 }
 
 .selected {
-    background-color: #fff;
+    background-color: #e1cece;
 }
 
-.selected:hover {
+/* .selected:hover {
     background-color: #fff;
-}
+} */
 
 .due {
     font-size: 0.8rem;
