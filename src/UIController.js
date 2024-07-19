@@ -2,8 +2,6 @@ import "animate.css";
 import {
     getProjectById,
     getProjectByName,
-    printProjects,
-    deleteTask,
     saveProjects,
     printProjects,
     deleteTask,
@@ -12,6 +10,8 @@ import {
 } from "./projectController";
 import trashIcon from "./assets/icons/trash-2.svg";
 import editIcon from "./assets/icons/edit-3.svg";
+import checkIcon from "./assets/icons/check.svg";
+import xIcon from "./assets/icons/x.svg";
 
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector(".btn-close");
@@ -87,8 +87,6 @@ export default function UIController() {
     const displayTasks = function () {
         mainDisplay.textContent = "";
 
-        console.log(selectedProject.getTasks());
-
         selectedProject.getTasks().forEach((task) => {
             const taskBox = document.createElement("div");
             const titleElement = document.createElement("p");
@@ -126,7 +124,6 @@ export default function UIController() {
 
             checkbox.addEventListener("change", () => {
                 task.done = checkbox.checked;
-                console.log(task);
             });
 
             checkboxContainer.appendChild(checkbox);
@@ -202,7 +199,9 @@ export default function UIController() {
             selectedProject.deleteTask(taskId);
             allTasks.deleteTask(taskId);
 
-            getProjects().slice(2).forEach(item => item.deleteTask(taskId));
+            getProjects()
+                .slice(2)
+                .forEach((item) => item.deleteTask(taskId));
 
             updateScreen();
         }
@@ -212,11 +211,45 @@ export default function UIController() {
         }
     };
 
-    function handleAddProject() {
-        createProject("New");
+    const handleAddProject = function () {
+        const divContainer = document.createElement("div");
+        const inputTitle = document.createElement("input");
+        const confirmBtn = document.createElement("button");
+        const cancelBtn = document.createElement("button");
+        divContainer.setAttribute("class", "add-project-form");
+        inputTitle.setAttribute("type", "text");
+        inputTitle.setAttribute("name", "new-title");
+        inputTitle.setAttribute("id", "new-title");
+        confirmBtn.innerHTML = `<img src="${checkIcon}" alt="confirm">`;
+        cancelBtn.innerHTML = `<img src="${xIcon}" alt="cancel">`;
+        divContainer.appendChild(inputTitle);
+        divContainer.appendChild(confirmBtn);
+        divContainer.appendChild(cancelBtn);
+
+        document.querySelectorAll(".add-project-form").forEach((ele) => {
+            ele.remove();
+        });
+
+        addProjectBtn.insertAdjacentElement("beforebegin", divContainer);
+
+        inputTitle.focus();
+
+        confirmBtn.addEventListener("click", () => {
+            if (inputTitle.value.length > 0) {
+                createProject("#" + inputTitle.value);
+                divContainer.classList.add("hidden");
+                userProjects = getProjects().slice(2);
+                displayUserProjects();
+            }
+        });
+
+        cancelBtn.addEventListener("click", () => {
+            divContainer.classList.add("hidden");
+        });
+
         userProjects = getProjects().slice(2);
         updateScreen();
-    }
+    };
 
     const updateScreen = function () {
         projectTitleElement.textContent = selectedProject.name;

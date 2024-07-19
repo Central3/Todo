@@ -213,6 +213,7 @@ select {
 
 .side-bar {
     height: 100vh;
+    overflow-y: auto;
     background-color: #f1dede;
     flex: 1;
 }
@@ -286,4 +287,8 @@ select {
 .project-title {
     text-align: center;
     margin: 8px 0;
+}
+
+#new-title {
+    padding: 4px;
 }
