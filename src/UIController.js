@@ -257,6 +257,7 @@ export default function UIController() {
         displayDefaultProjects();
         displayUserProjects();
         updateTodayList();
+        saveProjects();
 
         defaultProjectsList.childNodes.forEach((node) => {
             if (node.dataset.projectId === selectedProject.id)

@@ -220,6 +220,8 @@ select {
 
 .display {
     flex: 4;
+    height: 100vh;
+    overflow-y: scroll;
 }
 
 .default-projects-list {
