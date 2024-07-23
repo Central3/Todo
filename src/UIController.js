@@ -7,6 +7,7 @@ import {
     deleteTask,
     getProjects,
     createProject,
+    removeProject,
 } from "./projectController";
 import trashIcon from "./assets/icons/trash-2.svg";
 import editIcon from "./assets/icons/edit-3.svg";
@@ -157,9 +158,13 @@ export default function UIController() {
 
         userProjects.forEach((project) => {
             const container = document.createElement("div");
+            const removeBtn = document.createElement("img");
+            removeBtn.src = xIcon;
+            removeBtn.classList.add("remove-project");
             container.textContent = project.name;
+            container.append(removeBtn);
             container.setAttribute("data-project-id", `${project.id}`);
-            container.classList.add("project", "poppins-semibold");
+            container.classList.add("custom-project", "poppins-semibold");
 
             userProjectsList.appendChild(container);
         });
@@ -185,12 +190,21 @@ export default function UIController() {
         });
     };
 
-    const selectDefaultProject = (event) => {
-        if (event.target.classList.contains("project")) {
+    const handleSidebarClick = (event) => {
+        if (
+            event.target.classList.contains("custom-project") ||
+            event.target.classList.contains("project")
+        ) {
             selectedProject = getProjectById(event.target.dataset.projectId);
-
-            updateScreen();
         }
+
+        if (event.target.classList.contains("remove-project")) {
+            removeProject(event.target.parentNode.dataset.projectId);
+            userProjects = getProjects().slice(2);
+            selectedProject = allTasks;
+        }
+
+        updateScreen();
     };
 
     const mainDisplayClick = (event) => {
@@ -279,7 +293,7 @@ export default function UIController() {
     closeBtn.addEventListener("click", closeModal);
     addBtn.addEventListener("click", openModal);
     form.addEventListener("submit", handleSubmit);
-    sidebar.addEventListener("click", selectDefaultProject);
+    sidebar.addEventListener("click", handleSidebarClick);
     mainDisplay.addEventListener("click", mainDisplayClick);
     addProjectBtn.addEventListener("click", handleAddProject);
 

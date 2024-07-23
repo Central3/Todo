@@ -294,3 +294,8 @@ select {
 #new-title {
     padding: 4px;
 }
+
+.custom-project {
+    display: flex;
+    justify-content: space-between;
+}
