@@ -13,6 +13,7 @@ import trashIcon from "./assets/icons/trash-2.svg";
 import editIcon from "./assets/icons/edit-3.svg";
 import checkIcon from "./assets/icons/check.svg";
 import xIcon from "./assets/icons/x.svg";
+import xIconBlack from "./assets/icons/xBlack.svg";
 
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector(".btn-close");
@@ -159,7 +160,7 @@ export default function UIController() {
         userProjects.forEach((project) => {
             const container = document.createElement("div");
             const removeBtn = document.createElement("img");
-            removeBtn.src = xIcon;
+            removeBtn.src = xIconBlack;
             removeBtn.classList.add("remove-project");
             container.textContent = project.name;
             container.append(removeBtn);
@@ -199,7 +200,15 @@ export default function UIController() {
         }
 
         if (event.target.classList.contains("remove-project")) {
-            removeProject(event.target.parentNode.dataset.projectId);
+            const id = event.target.parentNode.dataset.projectId;
+
+            getProjectById(id)
+                .getTasks()
+                .forEach((item) => {
+                    allTasks.deleteTask(item.id);
+                });
+
+            removeProject(id);
             userProjects = getProjects().slice(2);
             selectedProject = allTasks;
         }
@@ -233,6 +242,7 @@ export default function UIController() {
         divContainer.setAttribute("class", "add-project-form");
         inputTitle.setAttribute("type", "text");
         inputTitle.setAttribute("name", "new-title");
+        inputTitle.setAttribute("autocomplete", "off");
         inputTitle.setAttribute("id", "new-title");
         confirmBtn.innerHTML = `<img src="${checkIcon}" alt="confirm">`;
         cancelBtn.innerHTML = `<img src="${xIcon}" alt="cancel">`;
