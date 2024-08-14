@@ -7,12 +7,13 @@ import {
     createProject,
     removeProject,
 } from "./projectController";
+import { openModal, closeModal } from "./modalFunctionality";
+import { updateTodayList } from "./todayListUpdater";
 import trashIcon from "./assets/icons/trash-2.svg";
 import editIcon from "./assets/icons/edit-3.svg";
 import checkIcon from "./assets/icons/check.svg";
 import xIcon from "./assets/icons/x.svg";
 import xIconBlack from "./assets/icons/xBlack.svg";
-import { openModal, closeModal } from "./modalFunctionality";
 
 const closeBtn = document.querySelector(".btn-close");
 const addBtn = document.querySelector("#add");
@@ -56,7 +57,7 @@ export default function UIController() {
             );
         }
 
-        updateTodayList();
+        updateTodayList(todayTasks, allTasks);
 
         closeModal();
         form.reset();
@@ -145,26 +146,6 @@ export default function UIController() {
             container.classList.add("custom-project", "poppins-semibold");
 
             userProjectsList.appendChild(container);
-        });
-    };
-
-    const updateTodayList = () => {
-        const today = new Date();
-        todayTasks.clearTasks();
-        allTasks.getTasks().forEach((task) => {
-            if (
-                task.dueDate &&
-                task.dueDate.toDateString() === today.toDateString()
-            ) {
-                todayTasks.addTask(
-                    task.title,
-                    task.desc,
-                    task.dueDate,
-                    task.priority,
-                    task.done,
-                    task.id
-                );
-            }
         });
     };
 
@@ -257,7 +238,7 @@ export default function UIController() {
         displayTasks();
         displayDefaultProjects();
         displayUserProjects();
-        updateTodayList();
+        updateTodayList(todayTasks, allTasks);
         saveProjects();
 
         defaultProjectsList.childNodes.forEach((node) => {
