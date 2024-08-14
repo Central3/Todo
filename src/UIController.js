@@ -3,8 +3,6 @@ import {
     getProjectById,
     getProjectByName,
     saveProjects,
-    printProjects,
-    deleteTask,
     getProjects,
     createProject,
     removeProject,
@@ -14,13 +12,12 @@ import editIcon from "./assets/icons/edit-3.svg";
 import checkIcon from "./assets/icons/check.svg";
 import xIcon from "./assets/icons/x.svg";
 import xIconBlack from "./assets/icons/xBlack.svg";
+import { openModal, closeModal } from "./modalFunctionality";
 
-const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector(".btn-close");
 const addBtn = document.querySelector("#add");
 const form = document.querySelector(".add-task");
 const mainDisplay = document.querySelector("#main-display");
-const modalOverlay = document.querySelector(".overlay");
 const defaultProjectsList = document.querySelector(".default-projects");
 const userProjectsList = document.querySelector(".user-projects");
 const projectTitleElement = document.querySelector(".project-title");
@@ -34,27 +31,6 @@ export default function UIController() {
     const defaultProjects = [allTasks, todayTasks];
     let userProjects = getProjects().slice(2);
     let selectedProject = allTasks;
-
-    const openModal = function () {
-        modal.classList.remove("hidden", "animate__zoomOut");
-        modal.classList.add("animate__zoomIn");
-        modalOverlay.classList.remove("hidden");
-        title.focus();
-    };
-
-    const closeModal = function () {
-        form.reset();
-
-        modal.classList.remove("animate__zoomIn");
-        modal.classList.add("animate__zoomOut");
-        modalOverlay.classList.add("hidden");
-
-        modal.addEventListener("animationend", function handler() {
-            modal.classList.add("hidden");
-
-            modal.removeEventListener("animationend", handler);
-        });
-    };
 
     const handleSubmit = function (event) {
         event.preventDefault();
@@ -83,6 +59,7 @@ export default function UIController() {
         updateTodayList();
 
         closeModal();
+        form.reset();
         updateScreen();
     };
 
@@ -300,8 +277,14 @@ export default function UIController() {
         );
     };
 
-    closeBtn.addEventListener("click", closeModal);
-    addBtn.addEventListener("click", openModal);
+    closeBtn.addEventListener("click", () => {
+        form.reset();
+        closeModal();
+    });
+    addBtn.addEventListener("click", () => {
+        openModal();
+        title.focus();
+    });
     form.addEventListener("submit", handleSubmit);
     sidebar.addEventListener("click", handleSidebarClick);
     mainDisplay.addEventListener("click", mainDisplayClick);
