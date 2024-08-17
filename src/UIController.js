@@ -13,10 +13,10 @@ import { taskRenderer } from "./taskRenderer";
 import checkIcon from "./assets/icons/check.svg";
 import xIcon from "./assets/icons/x.svg";
 import xIconBlack from "./assets/icons/xBlack.svg";
+import { createTaskForm } from "./taskForm";
 
-const closeBtn = document.querySelector(".btn-close");
 const addBtn = document.querySelector("#add");
-const form = document.querySelector(".add-task");
+const form = createTaskForm();
 const mainDisplay = document.querySelector("#main-display");
 const defaultProjectsList = document.querySelector(".default-projects");
 const userProjectsList = document.querySelector(".user-projects");
@@ -187,6 +187,20 @@ export default function UIController() {
         updateScreen();
     };
 
+    const handleFormClick = function (event) {
+        if (event.target.classList.value === "btn-close") {
+            form.reset();
+            closeModal();
+        }
+        if (event.target.classList.value === "add-btn") {
+            const submitEvent = new Event("submit", {
+                bubbles: true,
+                cancelable: true,
+            });
+            handleSubmit(submitEvent);
+        }
+    };
+
     const updateScreen = function () {
         projectTitleElement.textContent = selectedProject.name;
         displayTasks();
@@ -200,6 +214,7 @@ export default function UIController() {
                 node.classList.add("selected");
             else node.classList.remove("selected");
         });
+
         userProjectsList.childNodes.forEach((node) => {
             if (node.dataset.projectId === selectedProject.id)
                 node.classList.add("selected");
@@ -212,15 +227,12 @@ export default function UIController() {
         );
     };
 
-    closeBtn.addEventListener("click", () => {
-        form.reset();
-        closeModal();
-    });
     addBtn.addEventListener("click", () => {
-        openModal();
+        openModal(form);
         title.focus();
     });
     form.addEventListener("submit", handleSubmit);
+    form.addEventListener("click", handleFormClick);
     sidebar.addEventListener("click", handleSidebarClick);
     mainDisplay.addEventListener("click", mainDisplayClick);
     addProjectBtn.addEventListener("click", handleAddProject);
