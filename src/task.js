@@ -13,23 +13,7 @@ export default function task(
         dueDate,
         priority,
         done,
-
-        updateTitle(title) {
-            this.title = title;
-        },
-
-        updateDesc(desc) {
-            this.desc = desc;
-        },
-
-        updatePriority(priority) {
-            this.priority = priority;
-        },
-
-        toggleDone() {
-            this.done = !this.done;
-        },
     };
 
-    return { id, title, desc, dueDate, priority, done };
+    return newTask;
 }

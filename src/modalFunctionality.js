@@ -1,8 +1,9 @@
 const modal = document.querySelector(".modal");
 const modalOverlay = document.querySelector(".overlay");
 
-export const openModal = function (form) {
-    modal.appendChild(form);
+export const openModal = function (modalContent) {
+    modal.textContent = "";
+    modal.appendChild(modalContent);
     modal.classList.remove("hidden", "animate__zoomOut");
     modal.classList.add("animate__zoomIn");
     modalOverlay.classList.remove("hidden");

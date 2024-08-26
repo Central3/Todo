@@ -29,9 +29,36 @@ export default function project(id, name) {
         tasks.splice(0);
     }
 
+    function getTask(id) {
+        return tasks.find((task) => task.id === id);
+    }
+
     function getTasks() {
         return tasks;
     }
 
-    return { id, name, addTask, deleteTask, printTasks, getTasks, clearTasks };
+    function editTask(id, title, desc, dueDate, priority) {
+        const taskObj = getTask(id);
+        if (!taskObj) return;
+
+        let parsedDueDate = new Date(dueDate);
+        if (isNaN(parsedDueDate.valueOf())) parsedDueDate = "";
+
+        taskObj.title = title;
+        taskObj.desc = desc;
+        taskObj.dueDate = parsedDueDate;
+        taskObj.priority = priority;
+    }
+
+    return {
+        id,
+        name,
+        addTask,
+        deleteTask,
+        printTasks,
+        getTask,
+        getTasks,
+        editTask,
+        clearTasks,
+    };
 }

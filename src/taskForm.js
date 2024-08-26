@@ -1,7 +1,11 @@
 import { createElement } from "./domUtil";
+import { createFormFooter } from "./taskFormFooter";
 
-export const createTaskForm = function () {
-    const form = createElement("form", { action: "", class: "add-task" });
+export const createTaskForm = function (btnText) {
+    const form = createElement("form", {
+        action: "",
+        class: btnText.split(" ").join("-").toLowerCase(),
+    });
 
     const titleContainer = createElement("div");
     const titleInput = createElement("input", {
@@ -43,24 +47,7 @@ export const createTaskForm = function () {
         selectPriority.appendChild(option);
     });
 
-    const formFooter = createElement("div", { class: "modal-footer" });
-    const cancelBtn = createElement(
-        "button",
-        { type: "button", class: "btn-close" },
-        "Cancel"
-    );
-    const addBtn = createElement(
-        "button",
-        { type: "button", class: "add-btn" },
-        "Add Task"
-    );
-    formFooter.appendChild(cancelBtn);
-    formFooter.appendChild(addBtn);
-
-    // cancelBtn.addEventListener("click", () => {
-    //     form.reset();
-    //     closeModal();
-    // });
+    const formFooter = createFormFooter(btnText);
 
     otherContainer.appendChild(datePicker);
     otherContainer.appendChild(selectPriority);

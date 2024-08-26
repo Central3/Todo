@@ -37,7 +37,7 @@ export const taskRenderer = function (obj) {
     editBtn.classList.add("edit-task");
 
     checkbox.addEventListener("change", () => {
-        task.done = checkbox.checked;
+        obj.done = checkbox.checked;
     });
 
     checkboxContainer.appendChild(checkbox);

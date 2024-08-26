@@ -16,7 +16,8 @@ import xIconBlack from "./assets/icons/xBlack.svg";
 import { createTaskForm } from "./taskForm";
 
 const addBtn = document.querySelector("#add");
-const form = createTaskForm();
+const form = createTaskForm("Add Task");
+const editForm = createTaskForm("Save Task");
 const mainDisplay = document.querySelector("#main-display");
 const defaultProjectsList = document.querySelector(".default-projects");
 const userProjectsList = document.querySelector(".user-projects");
@@ -26,6 +27,8 @@ const sidebar = document.querySelector(".side-bar");
 
 export default function UIController() {
     const [title, description, dueDate, priority] = form.elements;
+    const [editTitle, editDescription, editDueDate, editPriority] =
+        editForm.elements;
     const allTasks = getProjectByName("All");
     const todayTasks = getProjectByName("Today");
     const defaultProjects = [allTasks, todayTasks];
@@ -35,25 +38,58 @@ export default function UIController() {
     const handleSubmit = function (event) {
         event.preventDefault();
 
-        allTasks.addTask(
-            title.value,
-            description.value,
-            dueDate.value,
-            priority.value
-        );
+        if (event.target.classList.contains("save-task")) {
+            const id = event.target.dataset.taskId;
 
-        const lastEleId =
-            allTasks.getTasks()[allTasks.getTasks().length - 1].id;
+            allTasks.editTask(
+                id,
+                editTitle.value,
+                editDescription.value,
+                editDueDate.value,
+                editPriority.value
+            );
 
-        if (selectedProject !== todayTasks && selectedProject !== allTasks) {
-            selectedProject.addTask(
+            selectedProject.editTask(
+                id,
+                editTitle.value,
+                editDescription.value,
+                editDueDate.value,
+                editPriority.value
+            );
+
+            userProjects.forEach((project) => {
+                project.editTask(
+                    id,
+                    editTitle.value,
+                    editDescription.value,
+                    editDueDate.value,
+                    editPriority.value
+                );
+            });
+        } else {
+            allTasks.addTask(
                 title.value,
                 description.value,
                 dueDate.value,
-                priority.value,
-                false,
-                lastEleId
+                priority.value
             );
+
+            const lastEleId =
+                allTasks.getTasks()[allTasks.getTasks().length - 1].id;
+
+            if (
+                selectedProject !== todayTasks &&
+                selectedProject !== allTasks
+            ) {
+                selectedProject.addTask(
+                    title.value,
+                    description.value,
+                    dueDate.value,
+                    priority.value,
+                    false,
+                    lastEleId
+                );
+            }
         }
 
         updateTodayList(todayTasks, allTasks);
@@ -142,7 +178,20 @@ export default function UIController() {
         }
 
         if (event.target.classList.contains("edit-task")) {
-            console.log("Edit task");
+            const taskId = event.target.parentNode.dataset.taskId;
+            const taskObj = selectedProject.getTask(taskId);
+
+            editForm.dataset.taskId = taskId;
+
+            editTitle.value = taskObj.title;
+            editDescription.value = taskObj.desc;
+            editPriority.value = taskObj.priority;
+
+            if (taskObj.dueDate)
+                editDueDate.value = taskObj.dueDate.toLocaleDateString("en-CA");
+
+            openModal(editForm);
+            editTitle.focus();
         }
     };
 
@@ -192,13 +241,6 @@ export default function UIController() {
             form.reset();
             closeModal();
         }
-        if (event.target.classList.value === "add-btn") {
-            const submitEvent = new Event("submit", {
-                bubbles: true,
-                cancelable: true,
-            });
-            handleSubmit(submitEvent);
-        }
     };
 
     const updateScreen = function () {
@@ -233,6 +275,8 @@ export default function UIController() {
     });
     form.addEventListener("submit", handleSubmit);
     form.addEventListener("click", handleFormClick);
+    editForm.addEventListener("click", handleFormClick);
+    editForm.addEventListener("submit", handleSubmit);
     sidebar.addEventListener("click", handleSidebarClick);
     mainDisplay.addEventListener("click", mainDisplayClick);
     addProjectBtn.addEventListener("click", handleAddProject);
