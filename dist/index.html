@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <title>Todoish</title>
+    <script defer src="main.js"></script></head>
+
+    <body class="poppins-regular">
+        <div class="container">
+            <section
+                class="modal hidden animate__animated animate__faster"
+            ></section>
+            <div class="overlay hidden"></div>
+
+            <div class="side-bar">
+                <div class="default-projects"></div>
+                <h3 class="project-subtitle">My Projects</h3>
+                <div class="user-projects"></div>
+                <button class="btn add-project-btn poppins-extrabold">
+                    Add Project
+                </button>
+            </div>
+
+            <div class="display">
+                <h1 class="project-title"></h1>
+                <div id="main-display"></div>
+                <button id="add" class="btn btn-open poppins-extrabold">
+                    <img src="5115221b8c8c7d954d6c.svg" alt="add" />Add task
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
