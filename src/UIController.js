@@ -193,6 +193,20 @@ export default function UIController() {
             openModal(editForm);
             editTitle.focus();
         }
+
+        if (event.target.classList.contains("done-status")) {
+            const taskId = event.target.parentNode.parentNode.dataset.taskId;
+            const todayTaskObj = todayTasks.getTask(taskId);
+
+            allTasks.getTask(taskId).done = event.target.checked;
+            if (todayTaskObj) todayTaskObj.done = event.target.checked;
+            userProjects.forEach((project) => {
+                const taskObj = project.getTask(taskId);
+                if (taskObj) taskObj.done = event.target.checked;
+            });
+
+            updateScreen();
+        }
     };
 
     const handleAddProject = function () {
